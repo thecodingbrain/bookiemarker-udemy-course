@@ -1,7 +1,7 @@
 -   name: Setup codingbrain environment
     hosts: all
     vars:
-        source_dir: /vagrant/code
+        source_dir: /vagrant
     become_user: vagrant
     tasks:
       
