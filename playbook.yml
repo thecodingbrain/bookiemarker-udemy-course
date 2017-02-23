@@ -9,16 +9,16 @@
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-frontend.git
         dest: "{{ source_dir }}/frontend"
-      state: present
+        state: present
       
     - name: clone backend soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-backend.git
         dest: "{{ source_dir }}/backend"
-      state: present
+        state: present
         
     - name: clone worker soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-worker.git
         dest: "{{ source_dir }}/worker"
-      state: present
+        state: present
