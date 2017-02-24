@@ -10,4 +10,6 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible" do |ansible|
       ansible.playbook = "playbook.yml"
   end
+
+  config.vm.post_up_message = "Your machine is ready! Open localhost:5000 in your browser to get started."
 end
