@@ -2,7 +2,6 @@
     hosts: all
     vars:
         source_dir: /vagrant
-    become_user: vagrant
     tasks:
       
     - name: clone frontend soure
@@ -25,16 +24,17 @@
         src: templates/run-backend.sh.j2
         dest: /etc/init/run-backend.sh
         mode: 0711
+      become: True
         
     - name: install run worker script
       template:
         src: templates/run-worker.sh.j2
         dest: /etc/init/run-worker.sh
         mode: 0711
+      become: True
 
     - name: install woker requirements
       shell: pip3 install -r requirements.txt
       args:
-        chdir: "{{ source_dir }}/woker" 
-            
-        
+        chdir: "{{ source_dir }}/worker" 
+      become: True
