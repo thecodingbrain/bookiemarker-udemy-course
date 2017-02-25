@@ -19,3 +19,20 @@
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-worker.git
         dest: "{{ source_dir }}/worker"
+
+    - name: install run backend script
+      template:
+        src: templates/run-backend.conf.j2
+        dest: /etc/init/run-backend.conf
+        
+    - name: install run worker script
+      template:
+        src: templates/run-worker.conf.j2
+        dest: /etc/init/run-worker.conf
+
+    - name: install woker requirements
+      shell: pip3 install -r requirements.txt
+      args:
+        chdir: "{{ source_dir }}/woker" 
+            
+        
