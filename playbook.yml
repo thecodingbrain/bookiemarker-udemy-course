@@ -19,6 +19,22 @@
           path: "{{ source_dir }}/worker"
       register: wp
             
+    - name: install run backend script
+      template:
+        src: templates/run-backend.sh.j2
+        dest: "{{ source_dir }}/run-worker.sh"
+        mode: 0711
+      become: True
+      when: not bp.stat.exists
+      
+    - name: install run worker script
+      template:
+        src: templates/run-worker.sh.j2
+        dest: "{{ source_dir }}/run-worker.sh"
+        mode: 0711
+      become: True
+      when: not wp.stat.exists
+
     - name: clone frontend soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-frontend.git
@@ -35,20 +51,4 @@
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-worker.git
         dest: "{{ source_dir }}/worker"
-      when: not wp.stat.exists
-
-    - name: install run backend script
-      template:
-        src: templates/run-backend.sh.j2
-        dest: /etc/init/run-backend.sh
-        mode: 0711
-      become: True
-      when: not bp.stat.exists
-        
-    - name: install run worker script
-      template:
-        src: templates/run-worker.sh.j2
-        dest: /etc/init/run-worker.sh
-        mode: 0711
-      become: True
       when: not wp.stat.exists
