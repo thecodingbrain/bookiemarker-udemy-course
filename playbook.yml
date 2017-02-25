@@ -22,13 +22,15 @@
 
     - name: install run backend script
       template:
-        src: templates/run-backend.conf.j2
-        dest: /etc/init/run-backend.conf
+        src: templates/run-backend.sh.j2
+        dest: /etc/init/run-backend.sh
+        mode: 0711
         
     - name: install run worker script
       template:
-        src: templates/run-worker.conf.j2
-        dest: /etc/init/run-worker.conf
+        src: templates/run-worker.sh.j2
+        dest: /etc/init/run-worker.sh
+        mode: 0711
 
     - name: install woker requirements
       shell: pip3 install -r requirements.txt
