@@ -4,20 +4,38 @@
         source_dir: /vagrant
     tasks:
       
+    - name: Check for frontend directory     
+      stat: 
+        path: "{{ source_dir }}/frontend"
+      register: fp
+
+    - name: Check for backend directory     
+      stat: 
+        path: "{{ source_dir }}/backend"
+      register: bp
+
+    - name: Check for worker directory     
+      stat: 
+          path: "{{ source_dir }}/worker"
+      register: wp
+            
     - name: clone frontend soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-frontend.git
         dest: "{{ source_dir }}/frontend"
+      when: not fp.stat.exists
       
     - name: clone backend soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-backend.git
         dest: "{{ source_dir }}/backend"
+      when: not bp.stat.exists
         
     - name: clone worker soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-worker.git
         dest: "{{ source_dir }}/worker"
+      when: not wp.stat.exists
 
     - name: install run backend script
       template:
@@ -25,6 +43,7 @@
         dest: /etc/init/run-backend.sh
         mode: 0711
       become: True
+      when: not bp.stat.exists
         
     - name: install run worker script
       template:
@@ -32,9 +51,4 @@
         dest: /etc/init/run-worker.sh
         mode: 0711
       become: True
-
-    - name: install woker requirements
-      shell: pip3 install -r requirements.txt
-      args:
-        chdir: "{{ source_dir }}/worker" 
-      become: True
+      when: not wp.stat.exists
