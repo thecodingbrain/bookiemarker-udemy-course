@@ -30,11 +30,25 @@
       become: True
       when: not bp.stat.exists
       
+    - name: create backend log file
+      file:
+        path: /var/log/upstart/backend.log
+        state: touch
+      become: True
+      when: not bp.stat.exists
+
     - name: install run worker script
       template:
         src: templates/run-worker.sh.j2
         dest: "{{ source_dir }}/run-worker.sh"
         mode: 0711
+      become: True
+      when: not wp.stat.exists
+
+    - name: create worker log file
+      file:
+        path: /var/log/upstart/worker.log
+        state: touch
       become: True
       when: not wp.stat.exists
 
