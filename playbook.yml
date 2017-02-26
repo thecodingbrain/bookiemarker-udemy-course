@@ -1,28 +1,31 @@
 -   name: Setup codingbrain environment
     hosts: all
     vars:
+        frontend_dir: /vagrant/frontend
+        backend_dir: /vagrant/backend
+        worker_dir: /vagrant/worker
         source_dir: /vagrant
     tasks:
       
     - name: Check for frontend directory     
       stat: 
-        path: "{{ source_dir }}/frontend"
+        path: "{{ frontend_dir }}"
       register: fp
 
     - name: Check for backend directory     
       stat: 
-        path: "{{ source_dir }}/backend"
+        path: "{{ backend_dir }}"
       register: bp
 
     - name: Check for worker directory     
       stat: 
-          path: "{{ source_dir }}/worker"
+          path: "{{ worker_dir }}"
       register: wp
             
     - name: install run backend script
       template:
         src: templates/run-backend.sh.j2
-        dest: "{{ source_dir }}/run-backup.sh"
+        dest: "{{ source_dir }}/run-backend.sh"
         mode: 0711
       become: True
       when: not bp.stat.exists
@@ -38,17 +41,17 @@
     - name: clone frontend soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-frontend.git
-        dest: "{{ source_dir }}/frontend"
+        dest: "{{ frontend_dir }}"
       when: not fp.stat.exists
       
     - name: clone backend soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-backend.git
-        dest: "{{ source_dir }}/backend"
+        dest: "{{ backend_dir }}"
       when: not bp.stat.exists
         
     - name: clone worker soure
       git:
         repo: https://github.com/thecodingbrain/webscraper-microservices-worker.git
-        dest: "{{ source_dir }}/worker"
+        dest: "{{ worker_dir }}"
       when: not wp.stat.exists
