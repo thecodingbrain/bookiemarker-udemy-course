@@ -22,7 +22,7 @@
     - name: install run backend script
       template:
         src: templates/run-backend.sh.j2
-        dest: "{{ source_dir }}/run-worker.sh"
+        dest: "{{ source_dir }}/run-backup.sh"
         mode: 0711
       become: True
       when: not bp.stat.exists
