@@ -30,6 +30,22 @@
       become: True
       when: not bp.stat.exists
       
+    - name: install stop backend script
+      template:
+        src: templates/stop-backend.sh.j2
+        dest: "{{ source_dir }}/stop-backend.sh"
+        mode: 0711
+      become: True
+      when: not bp.stat.exists
+      
+    - name: install log backend script
+      template:
+        src: templates/log-backend.sh.j2
+        dest: "{{ source_dir }}/log-backend.sh"
+        mode: 0711
+      become: True
+      when: not bp.stat.exists
+        
     - name: create backend log file
       file:
         path: /var/log/upstart/backend.log
@@ -42,6 +58,22 @@
         src: templates/run-worker.sh.j2
         dest: "{{ source_dir }}/run-worker.sh"
         mode: 0711
+      become: True
+      when: not wp.stat.exists
+
+    - name: install stop worker script
+        template:
+          src: templates/stop-worker.sh.j2
+          dest: "{{ source_dir }}/stop-worker.sh"
+          mode: 0711
+      become: True
+      when: not wp.stat.exists
+
+    - name: install stop worker script
+        template:
+          src: templates/log-worker.sh.j2
+          dest: "{{ source_dir }}/log-worker.sh"
+          mode: 0711
       become: True
       when: not wp.stat.exists
 
