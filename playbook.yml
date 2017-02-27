@@ -62,18 +62,18 @@
       when: not wp.stat.exists
 
     - name: install stop worker script
-        template:
-          src: templates/stop-worker.sh.j2
-          dest: "{{ source_dir }}/stop-worker.sh"
-          mode: 0711
+      template:
+        src: templates/stop-worker.sh.j2
+        dest: "{{ source_dir }}/stop-worker.sh"
+        mode: 0711
       become: True
       when: not wp.stat.exists
 
     - name: install stop worker script
-        template:
-          src: templates/log-worker.sh.j2
-          dest: "{{ source_dir }}/log-worker.sh"
-          mode: 0711
+      template:
+        src: templates/log-worker.sh.j2
+        dest: "{{ source_dir }}/log-worker.sh"
+        mode: 0711
       become: True
       when: not wp.stat.exists
 
