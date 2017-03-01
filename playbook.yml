@@ -101,3 +101,7 @@
         repo: https://github.com/thecodingbrain/webscraper-microservices-worker.git
         dest: "{{ worker_dir }}"
       when: not wp.stat.exists
+      
+    - name: open browser
+      command: python3 -m webbrowser -t "http://localhost:5000"                            
+          
