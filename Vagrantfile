@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "codingbrain/webscraper"
+  config.vm.box = "codingbrain/full-stack-crash-course"
 
   config.vm.network "forwarded_port", guest: 80, host: 5010
   config.vm.network "forwarded_port", guest: 8000, host: 5000
@@ -12,5 +12,5 @@ Vagrant.configure("2") do |config|
       ansible.playbook = "playbook.yml"
   end
 
-  config.vm.post_up_message = "Your machine is ready! Open localhost:5000 in your browser to get started."
+  config.vm.post_up_message = "Your course is ready! Open http://localhost:5000 in your browser to get started."
 end
