@@ -86,22 +86,19 @@
 
     - name: clone frontend soure
       git:
-        repo: https://github.com/thecodingbrain/webscraper-microservices-frontend.git
+        repo: https://github.com/thecodingbrain/full-stack-crash-course-frontend.git
         dest: "{{ frontend_dir }}"
       when: not fp.stat.exists
       
     - name: clone backend soure
       git:
-        repo: https://github.com/thecodingbrain/webscraper-microservices-backend.git
+        repo: https://github.com/thecodingbrain/full-stack-crash-course-backend.git
         dest: "{{ backend_dir }}"
       when: not bp.stat.exists
         
     - name: clone worker soure
       git:
-        repo: https://github.com/thecodingbrain/webscraper-microservices-worker.git
+        repo: https://github.com/thecodingbrain/full-stack-crash-course-worker.git
         dest: "{{ worker_dir }}"
       when: not wp.stat.exists
       
-    - name: open browser
-      command: python3 -m webbrowser -t "http://localhost:5000"                            
-          
