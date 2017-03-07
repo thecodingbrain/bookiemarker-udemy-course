@@ -87,18 +87,21 @@
     - name: clone frontend soure
       git:
         repo: https://github.com/thecodingbrain/full-stack-crash-course-frontend.git
+        version: final
         dest: "{{ frontend_dir }}"
       when: not fp.stat.exists
       
     - name: clone backend soure
       git:
         repo: https://github.com/thecodingbrain/full-stack-crash-course-backend.git
+        version: final
         dest: "{{ backend_dir }}"
       when: not bp.stat.exists
         
     - name: clone worker soure
       git:
         repo: https://github.com/thecodingbrain/full-stack-crash-course-worker.git
+        version: final
         dest: "{{ worker_dir }}"
       when: not wp.stat.exists
       
