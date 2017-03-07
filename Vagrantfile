@@ -1,5 +1,5 @@
 Vagrant.configure("2") do |config|
-  config.vm.box = "codingbrain/full-stack-crash-course"
+  config.vm.box = "codingbrain/bookiemarker"
 
   config.vm.network "forwarded_port", guest: 80, host: 5010
   config.vm.network "forwarded_port", guest: 8000, host: 5000
