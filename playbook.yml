@@ -5,6 +5,7 @@
         backend_dir: /vagrant/backend
         worker_dir: /vagrant/worker
         source_dir: /vagrant
+        templates_dir: .vagrant-templates
     tasks:
       
     - name: Check for frontend directory     
@@ -24,7 +25,7 @@
             
     - name: install run backend script
       template:
-        src: templates/run-backend.sh.j2
+        src: "{{ templates_dir }}/run-backend.sh.j2"
         dest: "{{ source_dir }}/run-backend.sh"
         mode: 0711
       become: True
@@ -32,7 +33,7 @@
       
     - name: install stop backend script
       template:
-        src: templates/stop-backend.sh.j2
+        src: "{{ templates_dir }}/stop-backend.sh.j2"
         dest: "{{ source_dir }}/stop-backend.sh"
         mode: 0711
       become: True
@@ -40,7 +41,7 @@
       
     - name: install log backend script
       template:
-        src: templates/log-backend.sh.j2
+        src: "{{ templates_dir }}/log-backend.sh.j2"
         dest: "{{ source_dir }}/log-backend.sh"
         mode: 0711
       become: True
@@ -55,7 +56,7 @@
 
     - name: install run worker script
       template:
-        src: templates/run-worker.sh.j2
+        src: "{{ templates_dir }}/run-worker.sh.j2"
         dest: "{{ source_dir }}/run-worker.sh"
         mode: 0711
       become: True
@@ -63,7 +64,7 @@
 
     - name: install stop worker script
       template:
-        src: templates/stop-worker.sh.j2
+        src: "{{ templates_dir }}/stop-worker.sh.j2"
         dest: "{{ source_dir }}/stop-worker.sh"
         mode: 0711
       become: True
@@ -71,7 +72,7 @@
 
     - name: install stop worker script
       template:
-        src: templates/log-worker.sh.j2
+        src: "{{ templates_dir }}/log-worker.sh.j2"
         dest: "{{ source_dir }}/log-worker.sh"
         mode: 0711
       become: True
