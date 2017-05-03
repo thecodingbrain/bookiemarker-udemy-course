@@ -11,6 +11,10 @@ Vagrant.configure("2") do |config|
   config.vm.provision "ansible" do |ansible|
       ansible.playbook = "playbook.yml"
   end
-
+  
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 512
+  end
+  
   config.vm.post_up_message = "Your course is ready! Open http://localhost:7220 in your browser to get started."
 end
