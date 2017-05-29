@@ -6,6 +6,7 @@
         worker_dir: /vagrant/worker
         source_dir: /vagrant
         templates_dir: .vagrant-templates
+        settings_path: /home/codingbrain/config/settings.py
     tasks:
       
     - name: Check for frontend directory     
@@ -23,6 +24,18 @@
           path: "{{ worker_dir }}"
       register: wp
             
+    - name: change class url
+      lineinfile: 
+        dest: "{{ settings_path }}" 
+        regexp: "CLASS_URL =.*"
+        line: 'CLASS_URL = "https://www.udemy.com/draft/1230690/learn/v4/t/lecture/{}"'
+        
+    - name: change lessons.yaml url
+      lineinfile: 
+        dest: "{{ settings_path }}" 
+        regexp: "LESSONS_YAML_URL =.*"
+        line: 'LESSONS_YAML_URL = "https://s3.amazonaws.com/cb-microservices/lessons-udemy.yaml"'
+                               
     - name: install run backend script
       template:
         src: "{{ templates_dir }}/run-backend.sh.j2"
