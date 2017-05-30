@@ -35,7 +35,8 @@
         dest: "{{ settings_path }}" 
         regexp: "LESSONS_YAML_URL =.*"
         line: 'LESSONS_YAML_URL = "https://s3.amazonaws.com/cb-microservices/lessons-udemy.yaml"'
-                               
+      notify: restart codingbrain
+                                   
     - name: install run backend script
       template:
         src: "{{ templates_dir }}/run-backend.sh.j2"
@@ -119,3 +120,6 @@
         dest: "{{ worker_dir }}"
       when: not wp.stat.exists
       
+handlers:
+    - name: restart codingbrain
+      service: name=codingbrain state=started
