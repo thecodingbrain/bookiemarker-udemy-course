@@ -1,3 +1,4 @@
+---
 -   name: Setup codingbrain environment
     hosts: all
     vars:
@@ -7,119 +8,122 @@
         source_dir: /vagrant
         templates_dir: .vagrant-templates
         settings_path: /home/codingbrain/config/settings.py
+        
     tasks:
-      
-    - name: Check for frontend directory     
-      stat: 
-        path: "{{ frontend_dir }}"
-      register: fp
+        - name: Check for frontend directory     
+          stat: 
+            path: "{{ frontend_dir }}"
+          register: fp
 
-    - name: Check for backend directory     
-      stat: 
-        path: "{{ backend_dir }}"
-      register: bp
+        - name: Check for backend directory     
+          stat: 
+            path: "{{ backend_dir }}"
+          register: bp
 
-    - name: Check for worker directory     
-      stat: 
-          path: "{{ worker_dir }}"
-      register: wp
+        - name: Check for worker directory     
+          stat: 
+              path: "{{ worker_dir }}"
+          register: wp
+                
+        - name: change class url
+          lineinfile: 
+            dest: "{{ settings_path }}" 
+            regexp: "CLASS_URL =.*"
+            line: 'CLASS_URL = "https://www.udemy.com/draft/1230690/learn/v4/t/lecture/{}"'
+          notify: stop codingbrain
             
-    - name: change class url
-      lineinfile: 
-        dest: "{{ settings_path }}" 
-        regexp: "CLASS_URL =.*"
-        line: 'CLASS_URL = "https://www.udemy.com/draft/1230690/learn/v4/t/lecture/{}"'
-        
-    - name: change lessons.yaml url
-      lineinfile: 
-        dest: "{{ settings_path }}" 
-        regexp: "LESSONS_YAML_URL =.*"
-        line: 'LESSONS_YAML_URL = "https://s3.amazonaws.com/cb-microservices/lessons-udemy.yaml"'
-      notify: restart codingbrain
-                                   
-    - name: install run backend script
-      template:
-        src: "{{ templates_dir }}/run-backend.sh.j2"
-        dest: "{{ source_dir }}/run-backend.sh"
-        mode: 0711
-      become: True
-      when: not bp.stat.exists
-      
-    - name: install stop backend script
-      template:
-        src: "{{ templates_dir }}/stop-backend.sh.j2"
-        dest: "{{ source_dir }}/stop-backend.sh"
-        mode: 0711
-      become: True
-      when: not bp.stat.exists
-      
-    - name: install log backend script
-      template:
-        src: "{{ templates_dir }}/log-backend.sh.j2"
-        dest: "{{ source_dir }}/log-backend.sh"
-        mode: 0711
-      become: True
-      when: not bp.stat.exists
-        
-    - name: create backend log file
-      file:
-        path: /var/log/upstart/backend.log
-        state: touch
-      become: True
-      when: not bp.stat.exists
+        - name: change lessons.yaml url
+          lineinfile: 
+            dest: "{{ settings_path }}" 
+            regexp: "LESSONS_YAML_URL =.*"
+            line: 'LESSONS_YAML_URL = "https://s3.amazonaws.com/cb-microservices/lessons-udemy.yaml"'
+          notify: start codingbrain
+                                       
+        - name: install run backend script
+          template:
+            src: "{{ templates_dir }}/run-backend.sh.j2"
+            dest: "{{ source_dir }}/run-backend.sh"
+            mode: 0711
+          become: True
+          when: not bp.stat.exists
+          
+        - name: install stop backend script
+          template:
+            src: "{{ templates_dir }}/stop-backend.sh.j2"
+            dest: "{{ source_dir }}/stop-backend.sh"
+            mode: 0711
+          become: True
+          when: not bp.stat.exists
+          
+        - name: install log backend script
+          template:
+            src: "{{ templates_dir }}/log-backend.sh.j2"
+            dest: "{{ source_dir }}/log-backend.sh"
+            mode: 0711
+          become: True
+          when: not bp.stat.exists
+            
+        - name: create backend log file
+          file:
+            path: /var/log/upstart/backend.log
+            state: touch
+          become: True
+          when: not bp.stat.exists
 
-    - name: install run worker script
-      template:
-        src: "{{ templates_dir }}/run-worker.sh.j2"
-        dest: "{{ source_dir }}/run-worker.sh"
-        mode: 0711
-      become: True
-      when: not wp.stat.exists
+        - name: install run worker script
+          template:
+            src: "{{ templates_dir }}/run-worker.sh.j2"
+            dest: "{{ source_dir }}/run-worker.sh"
+            mode: 0711
+          become: True
+          when: not wp.stat.exists
 
-    - name: install stop worker script
-      template:
-        src: "{{ templates_dir }}/stop-worker.sh.j2"
-        dest: "{{ source_dir }}/stop-worker.sh"
-        mode: 0711
-      become: True
-      when: not wp.stat.exists
+        - name: install stop worker script
+          template:
+            src: "{{ templates_dir }}/stop-worker.sh.j2"
+            dest: "{{ source_dir }}/stop-worker.sh"
+            mode: 0711
+          become: True
+          when: not wp.stat.exists
 
-    - name: install stop worker script
-      template:
-        src: "{{ templates_dir }}/log-worker.sh.j2"
-        dest: "{{ source_dir }}/log-worker.sh"
-        mode: 0711
-      become: True
-      when: not wp.stat.exists
+        - name: install stop worker script
+          template:
+            src: "{{ templates_dir }}/log-worker.sh.j2"
+            dest: "{{ source_dir }}/log-worker.sh"
+            mode: 0711
+          become: True
+          when: not wp.stat.exists
 
-    - name: create worker log file
-      file:
-        path: /var/log/upstart/worker.log
-        state: touch
-      become: True
-      when: not wp.stat.exists
+        - name: create worker log file
+          file:
+            path: /var/log/upstart/worker.log
+            state: touch
+          become: True
+          when: not wp.stat.exists
 
-    - name: clone frontend soure
-      git:
-        repo: https://github.com/thecodingbrain/bookiemarker-frontend.git
-        version: final
-        dest: "{{ frontend_dir }}"
-      when: not fp.stat.exists
-      
-    - name: clone backend soure
-      git:
-        repo: https://github.com/thecodingbrain/bookiemarker-backend.git
-        version: final
-        dest: "{{ backend_dir }}"
-      when: not bp.stat.exists
-        
-    - name: clone worker soure
-      git:
-        repo: https://github.com/thecodingbrain/bookiemarker-worker.git
-        version: final
-        dest: "{{ worker_dir }}"
-      when: not wp.stat.exists
-      
-handlers:
-    - name: restart codingbrain
-      service: name=codingbrain state=started
+        - name: clone frontend soure
+          git:
+            repo: https://github.com/thecodingbrain/bookiemarker-frontend.git
+            version: final
+            dest: "{{ frontend_dir }}"
+          when: not fp.stat.exists
+          
+        - name: clone backend soure
+          git:
+            repo: https://github.com/thecodingbrain/bookiemarker-backend.git
+            version: final
+            dest: "{{ backend_dir }}"
+          when: not bp.stat.exists
+            
+        - name: clone worker soure
+          git:
+            repo: https://github.com/thecodingbrain/bookiemarker-worker.git
+            version: final
+            dest: "{{ worker_dir }}"
+          when: not wp.stat.exists
+
+    handlers:
+        - name: stop codingbrain
+          service: name=codingbrain state=stopped
+        - name: start codingbrain
+          service: name=codingbrain state=started
