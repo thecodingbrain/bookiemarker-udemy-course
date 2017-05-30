@@ -125,5 +125,7 @@
     handlers:
         - name: stop codingbrain
           service: name=codingbrain state=stopped
+          become: True
         - name: start codingbrain
           service: name=codingbrain state=started
+          become: True
