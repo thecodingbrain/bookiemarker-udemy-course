@@ -120,6 +120,6 @@
         dest: "{{ worker_dir }}"
       when: not wp.stat.exists
       
-handlers:
+- handlers:
     - name: restart codingbrain
       service: name=codingbrain state=started
