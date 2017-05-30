@@ -29,7 +29,7 @@
           lineinfile: 
             dest: "{{ settings_path }}" 
             regexp: "CLASS_URL =.*"
-            line: 'CLASS_URL = "https://www.udemy.com/draft/1230690/learn/v4/t/lecture/{}"'
+            line: 'CLASS_URL = "https://www.udemy.com/1230690/learn/v4/t/lecture/{}"'
           notify: stop codingbrain
             
         - name: change lessons.yaml url
