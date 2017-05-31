@@ -9,8 +9,15 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 7235, host: 7235 # RabbitMQ management server
 
   if Vagrant::Util::Platform.windows? then
+      inline: "git clone -b final https://github.com/thecodingbrain/bookiemarker-frontend.git /vagrant/frontend"
     config.vm.provision "shell",
-      inline: "/bin/sh /vagrant/provision.bat"
+      inline: "git clone -b final https://github.com/thecodingbrain/bookiemarker-backend.git /vagrant/backend"
+    config.vm.provision "shell",
+      inline: "git clone -b final https://github.com/thecodingbrain/bookiemarker-worker.git /vagrant/worker"
+    config.vm.provision "shell",
+      inline: "cp -f /vagrant/settings.py /home/codingbrain/config"
+    config.vm.provision "shell",
+      inline: "sudo service codingbrain restart"
   else
     config.vm.provision "shell",
       inline: "/bin/sh /vagrant/provision.sh"
