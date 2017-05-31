@@ -9,6 +9,7 @@ Vagrant.configure("2") do |config|
   config.vm.network :forwarded_port, guest: 7235, host: 7235 # RabbitMQ management server
 
   if Vagrant::Util::Platform.windows? then
+    config.vm.provision "shell",
       inline: "git clone -b final https://github.com/thecodingbrain/bookiemarker-frontend.git /vagrant/frontend"
     config.vm.provision "shell",
       inline: "git clone -b final https://github.com/thecodingbrain/bookiemarker-backend.git /vagrant/backend"

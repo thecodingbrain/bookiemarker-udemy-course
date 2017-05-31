@@ -164,7 +164,7 @@ SOLUTION_BRANCH = "mysolution"
 
 LOCAL_YAML = ''
 
-CLASS_URL = "https://www.udemy.com/1230690/learn/v4/t/lecture/{}"
+CLASS_URL = "https://www.udemy.com/fullstack-microservices-course/learn/v4/t/lecture/{}"
 
 LESSONS_YAML_URL = "https://s3.amazonaws.com/cb-microservices/lessons-udemy.yaml"
 
